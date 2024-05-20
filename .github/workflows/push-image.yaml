@@ -22,11 +22,13 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: toybeaver/demo-1
+          tags: |
+            type=semver,pattern={{version}},value=0.0.1
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: 0.0.1
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
