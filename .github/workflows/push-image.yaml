@@ -24,6 +24,9 @@ jobs:
           images: toybeaver/demo-1
           tags: |
             type=sha,enable=true,prefix=sha-,format=short
+      - name: debug
+        run: |
+          echo ${{ steps.meta.outputs.tags }}
 
       - name: Build and push
         uses: docker/build-push-action@v5
