@@ -23,7 +23,7 @@ jobs:
         with:
           images: toybeaver/demo-1
           tags: |
-            type=semver,pattern={{version}},value=0.0.1
+            type=edge
 
       - name: Build and push
         uses: docker/build-push-action@v5
