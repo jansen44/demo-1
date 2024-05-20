@@ -23,7 +23,7 @@ jobs:
         with:
           images: toybeaver/demo-1
           tags: |
-            type=edge
+            type=sha,enable=true,prefix=sha-,format=short
 
       - name: Build and push
         uses: docker/build-push-action@v5
