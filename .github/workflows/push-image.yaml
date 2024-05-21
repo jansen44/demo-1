@@ -7,7 +7,9 @@ jobs:
     uses: jansen44/demo-argo/.github/workflows/deploy.yaml@main
     with:
       image: toybeaver/demo-1
-      deploymentFilePath: dev/apps/demo-1/deployment.yaml
+      app: demo-1
+      env: dev
+      project: demo
     secrets:
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
       dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
