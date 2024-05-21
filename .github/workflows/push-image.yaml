@@ -49,18 +49,19 @@ jobs:
     needs: push_to_registry
 
     steps:
-      - name: Download a single artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: tag
-
       - uses: actions/checkout@v4
         with:
           repository: "jansen44/demo-argo"
           token: ${{ secrets.GH_TOKEN }}
 
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tag
+
       - name: Update dev/apps/demo-1/deployment.yaml
         run: |
+          ls
           sed -i -e 's/\(image:.*:\).*$/\1$(cat tag)/' dev/apps/demo-1/deployment.yaml
           rm tag
           git diff
