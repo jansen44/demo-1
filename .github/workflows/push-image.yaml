@@ -29,13 +29,13 @@ jobs:
         run: |
           echo ${{ steps.meta.outputs.tags }} | sed -e 's/\(.*:\)\(.*\)$/\2/' > tag
 
-      # - name: Build and push
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: .
-      #     push: true
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
       - name: Upload tag as artifact
         uses: actions/upload-artifact@v4
