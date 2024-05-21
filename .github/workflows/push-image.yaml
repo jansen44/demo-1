@@ -1,74 +1,14 @@
-name: Publish Docker image
+name: Deploy
 
 on: push
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: toybeaver/demo-1
-          tags: |
-            type=sha,enable=true,prefix=,format=short
-
-      - name: Save tag as file
-        run: |
-          echo ${{ steps.meta.outputs.tags }} | sed -e 's/\(.*:\)\(.*\)$/\2/' > tag
-
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Upload tag as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: tag
-          path: tag
-
-  commit_new_version:
-    name: Commit to ArgoCD config repo with new version
-    runs-on: ubuntu-latest
-    needs: push_to_registry
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: "jansen44/demo-argo"
-          token: ${{ secrets.GH_TOKEN }}
-
-      - name: Download a single artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: tag
-
-      - name: Update dev/apps/demo-1/deployment.yaml
-        run: |
-          sed -i -e "s/\(image:.*:\).*$/\1$(cat tag)/" dev/apps/demo-1/deployment.yaml
-          git diff
-
-      - name: Commit and Push
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
-          git add  dev/apps/demo-1/deployment.yaml
-          git commit -m "Update demo-1 dev image to 'demo-1:$(cat tag)'"
-          rm tag
-          git push
+  deploy:
+    uses: jansen44/demo-argo/.github/workflows/deploy.yml@main
+    with:
+      image: toybeaver/demo-1
+      deploymentFilePath: dev/apps/demo-1/deployment.yaml
+    secrets:
+      dockerUsername: ${{ secrets.DOCKER_USERNAME }}
+      dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
+      ghPAT: ${{ secrets.GH_TOKEN }}
