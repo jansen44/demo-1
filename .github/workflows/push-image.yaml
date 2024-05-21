@@ -61,7 +61,6 @@ jobs:
 
       - name: Update dev/apps/demo-1/deployment.yaml
         run: |
-          ls
-          sed -i -e 's/\(image:.*:\).*$/\1$(cat tag)/' dev/apps/demo-1/deployment.yaml
+          sed -i -e "s/\(image:.*:\).*$/\1$(cat tag)/" dev/apps/demo-1/deployment.yaml
           rm tag
           git diff
