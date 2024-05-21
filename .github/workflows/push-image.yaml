@@ -23,11 +23,11 @@ jobs:
         with:
           images: toybeaver/demo-1
           tags: |
-            type=sha,enable=true,prefix=sha-,format=short
+            type=sha,enable=true,prefix=,format=short
 
       - name: Save tag as file
         run: |
-          echo ${{ steps.meta.outputs.tags }} > tag
+          echo ${{ steps.meta.outputs.tags }} | sed -e 's/\(.*:\)\(.*\)$/\2/' > tag
 
       # - name: Build and push
       #   uses: docker/build-push-action@v5
