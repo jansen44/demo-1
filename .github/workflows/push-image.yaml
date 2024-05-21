@@ -11,6 +11,7 @@ jobs:
       env: dev
       project: demo
     secrets:
+      argoToken: ${{ secrets.ARGOCD_TOKEN }}
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
       dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
       ghPAT: ${{ secrets.GH_TOKEN }}
