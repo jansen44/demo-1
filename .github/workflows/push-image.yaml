@@ -35,3 +35,21 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  commit_new_version:
+    name: Commit to ArgoCD config repo with new version
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: "jansen44/demo-argo"
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: debug
+        run: |
+          ls
+
+# sed -i -e 's/\(image:.*:\).*$/\1new-tag/' deployment.yaml
+#
+#     sed -i -e 's/\(image:.*:\).*$/\1new-tag/' deployment.yaml
