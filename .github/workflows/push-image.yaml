@@ -61,7 +61,14 @@ jobs:
 
       - name: Update dev/apps/demo-1/deployment.yaml
         run: |
-          cat tag
           sed -i -e "s/\(image:.*:\).*$/\1$(cat tag)/" dev/apps/demo-1/deployment.yaml
-          rm tag
           git diff
+
+      - name: Commit and Push
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git add  dev/apps/demo-1/deployment.yaml
+          git commit -m "Update demo-1 dev image to 'demo-1:$(cat tag)'"
+          rm tag
+          git push
