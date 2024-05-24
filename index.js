@@ -29,7 +29,9 @@ async function connect_db() {
   const query = "SELECT 1+1";
 
   const [result] = await connection.query(query);
-  console.log(query, result);
+  if (result[0]["1+1"] === 2) {
+    console.log(":: Database connection Successful!");
+  }
 }
 
 start();
